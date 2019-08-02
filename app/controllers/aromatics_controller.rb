@@ -1,4 +1,5 @@
 class AromaticsController < ApplicationController
+  skip_before_action :authorize_request, only: [:show, :index]
   before_action :set_aromatic, only: [:show, :update, :destroy]
 
   # GET /aromatics
@@ -46,6 +47,6 @@ class AromaticsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def aromatic_params
-      params.require(:aromatic).permit(:title, :description, :user_id, :image)
+      params.require(:aromatic).permit(:title, :description, :image)
     end
 end

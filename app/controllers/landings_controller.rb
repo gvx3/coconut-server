@@ -1,9 +1,10 @@
 class LandingsController < ApplicationController
+  skip_before_action :authorize_request, only: [:show, :index]
   before_action :set_landing, only: [:show, :update, :destroy]
 
   # GET /landings
   def index
-    @landings = Landing.all
+    @landings = Landing.search params
 
     render json: @landings
   end
@@ -46,6 +47,6 @@ class LandingsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def landing_params
-      params.require(:landing).permit(:title, :description, :landing_type_id)
+      params.require(:landing).permit(:title, :description, :landing_type_id, :image)
     end
 end

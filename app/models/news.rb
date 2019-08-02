@@ -8,7 +8,7 @@ class News < ApplicationRecord
 
   def as_json(options={})
     super().merge({
-      image_url: rails_blob_path(self.image,only_path:true),
+      image_url: !self.image.attached? ? "" : rails_blob_path(self.image,only_path:true),
       new_type_name: self.new_type.name,
       username: self.user.username      
     })
@@ -21,10 +21,16 @@ class News < ApplicationRecord
     data = data.select %{
       id, title, description, new_type_id, created_at, updated_at
     }
-    x = ActiveRecord::Base.connection.execute(data.to_sql)
+
+    params[:order] ||= 'id desc'
+    data = data.order(params[:order])
+    data = data.limit(params[:limit]) if params[:limit].present?
+    data = data.offset(params[:offset]) if params[:offset].present?
+
+    sql = ActiveRecord::Base.connection.execute(data.to_sql)
     
     
-    x.to_a.each do |i|
+    sql.to_a.each do |i|
       s = self.find(i["id"])
       i["username"] = s.user.username
       i["new_type_name"] = s.new_type.name

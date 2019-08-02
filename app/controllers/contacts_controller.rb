@@ -1,9 +1,10 @@
 class ContactsController < ApplicationController
+  skip_before_action :authorize_request, only: [:show, :index]
   before_action :set_contact, only: [:show, :update, :destroy]
 
   # GET /contacts
   def index
-    @contacts = Contact.all
+    @contacts = Contact.first
 
     render json: @contacts
   end

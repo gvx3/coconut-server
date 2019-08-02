@@ -1,4 +1,5 @@
 class BenefitsController < ApplicationController
+  skip_before_action :authorize_request, only: [:show, :index]
   before_action :set_benefit, only: [:show, :update, :destroy]
 
   # GET /benefits

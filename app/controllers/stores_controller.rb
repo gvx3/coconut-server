@@ -1,9 +1,10 @@
 class StoresController < ApplicationController
+  skip_before_action :authorize_request, only: [:show, :index]
   before_action :set_store, only: [:show, :update, :destroy]
 
   # GET /stores
   def index
-    @stores = Store.all
+    @stores = Store.search(params)
 
     render json: @stores
   end

@@ -1,9 +1,10 @@
 class OurStoriesController < ApplicationController
+  skip_before_action :authorize_request, only: [:show, :index]
   before_action :set_our_story, only: [:show, :update, :destroy]
 
   # GET /our_stories
   def index
-    @our_stories = OurStory.all
+    @our_stories = OurStory.search(params)
 
     render json: @our_stories
   end

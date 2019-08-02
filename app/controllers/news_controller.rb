@@ -1,4 +1,5 @@
 class NewsController < ApplicationController
+  skip_before_action :authorize_request, only: [:show, :index]
   before_action :set_news, only: [:show, :update, :destroy]
   include Rails.application.routes.url_helpers
   # GET /news
