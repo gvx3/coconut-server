@@ -10,7 +10,7 @@ class News < ApplicationRecord
     super().merge({
       image_url: !self.image.attached? ? "" : rails_blob_path(self.image,only_path:true),
       new_type_name: self.new_type.name,
-      username: self.user.username      
+      username: self.user.username     
     })
   end
 
@@ -22,7 +22,7 @@ class News < ApplicationRecord
       id, title, description, new_type_id, created_at, updated_at
     }
 
-    params[:order] ||= 'id desc'
+    # params[:order] ||= 'id desc'
     data = data.order(params[:order])
     data = data.limit(params[:limit]) if params[:limit].present?
     data = data.offset(params[:offset]) if params[:offset].present?
